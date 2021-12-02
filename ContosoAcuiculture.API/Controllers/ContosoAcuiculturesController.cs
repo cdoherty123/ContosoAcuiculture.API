@@ -13,7 +13,7 @@ namespace ContosoAcuiculture.API
 }
 //Commented out Controller to avoid errors due to not having DB or list
 
-    /*
+ /*   
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -107,7 +107,7 @@ namespace ContosoAcuiculture.API
 
         private bool ContosoAcuicultureExists(int id)
         {
-            return _context.ContosoAcuiculture.Any(e => e.OfficeID == id);
+            return _context.ContosoAcuiculture.Any(e => e.ShrimpNumber == id);
         }
     }
 }
