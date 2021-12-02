@@ -11,6 +11,8 @@ namespace ContosoAcuiculture.API
 { 
 
 }
+//Commented out Controller to avoid errors due to not having DB or list
+
     /*
 {
     [Route("api/[controller]")]
