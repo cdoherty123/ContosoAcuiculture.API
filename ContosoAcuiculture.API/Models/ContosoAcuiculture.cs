@@ -10,9 +10,9 @@ namespace ContosoAcuiculture.API.Models
 {
     public class ContosoAcuiculture
     {
-        
+        //These are only samples until we recieve the database
             [Key]
-            public int OfficeID { get; set; }
+            public int ShrimpNumber { get; set; }
             public string Name { get; set; }
             public int SiteID { get; set; }
         
