@@ -7,13 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ContosoAcuiculture.API.Models;
 
-namespace ContosoAcuiculture.API
-{ 
-
-}
-//Commented out Controller to avoid errors due to not having DB or list
-
- /*   
+namespace ContosoAcuiculture.API 
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -28,14 +22,14 @@ namespace ContosoAcuiculture.API
 
         // GET: api/ContosoAcuicultures
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ContosoAcuiculture>>> GetContosoAcuiculture()
+        public async Task<ActionResult<IEnumerable<ContosoAcuicultureModel>>> GetContosoAcuiculture()
         {
             return await _context.ContosoAcuiculture.ToListAsync();
         }
 
         // GET: api/ContosoAcuicultures/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<ContosoAcuiculture>> GetContosoAcuiculture(int id)
+        public async Task<ActionResult<ContosoAcuicultureModel>> GetContosoAcuiculture(int id)
         {
             var contosoAcuiculture = await _context.ContosoAcuiculture.FindAsync(id);
 
@@ -50,9 +44,9 @@ namespace ContosoAcuiculture.API
         // PUT: api/ContosoAcuicultures/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutContosoAcuiculture(int id, ContosoAcuiculture contosoAcuiculture)
+        public async Task<IActionResult> PutContosoAcuiculture(int id, ContosoAcuicultureModel contosoAcuiculture)
         {
-            if (id != contosoAcuiculture.OfficeID)
+            if (id != contosoAcuiculture.ShrimpID)
             {
                 return BadRequest();
             }
@@ -81,12 +75,12 @@ namespace ContosoAcuiculture.API
         // POST: api/ContosoAcuicultures
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<ContosoAcuiculture>> PostContosoAcuiculture(ContosoAcuiculture contosoAcuiculture)
+        public async Task<ActionResult<ContosoAcuicultureModel>> PostContosoAcuiculture(ContosoAcuicultureModel contosoAcuiculture)
         {
             _context.ContosoAcuiculture.Add(contosoAcuiculture);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetContosoAcuiculture", new { id = contosoAcuiculture.OfficeID }, contosoAcuiculture);
+            return CreatedAtAction("GetContosoAcuiculture", new { id = contosoAcuiculture.ShrimpID }, contosoAcuiculture);
         }
 
         // DELETE: api/ContosoAcuicultures/5
@@ -107,8 +101,7 @@ namespace ContosoAcuiculture.API
 
         private bool ContosoAcuicultureExists(int id)
         {
-            return _context.ContosoAcuiculture.Any(e => e.ShrimpNumber == id);
+            return _context.ContosoAcuiculture.Any(e => e.ShrimpID == id);
         }
     }
 }
-*/

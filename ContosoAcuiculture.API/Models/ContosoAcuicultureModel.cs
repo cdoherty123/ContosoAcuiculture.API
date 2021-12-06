@@ -8,13 +8,16 @@ using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 namespace ContosoAcuiculture.API.Models
 {
-    public class ContosoAcuiculture
+    public class ContosoAcuicultureModel
     {
         //These are only samples until we recieve the database
             [Key]
-            public int ShrimpNumber { get; set; }
-            public string Name { get; set; }
-            public int SiteID { get; set; }
+            public int ID { get; set; }
+            public int ShrimpID { get; set; }
+            public float AverageWeight { get; set; }
+            public int DailyFeed { get; set; }
+            public int EstimatedSurvival { get; set; } 
+            public string Observations { get; set; }
         
     }
 }
