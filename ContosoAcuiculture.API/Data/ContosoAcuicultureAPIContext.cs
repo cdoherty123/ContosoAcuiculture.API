@@ -13,4 +13,8 @@ using ContosoAcuiculture.API.Models;
         }
 
         public DbSet<ContosoAcuiculture.API.Models.ContosoAcuiculture> ContosoAcuiculture { get; set; }
-    }
+        protected override void OnConfiguring(DbContextOptionsBuilder options)
+        {
+
+        }
+}
