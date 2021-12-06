@@ -13,6 +13,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using ContosoAcuiculture.API.Models;
+using Microsoft.Azure.Cosmos;
 
 namespace ContosoAcuiculture.API
 {

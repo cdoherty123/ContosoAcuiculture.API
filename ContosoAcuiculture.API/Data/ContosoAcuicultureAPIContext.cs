@@ -4,8 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using ContosoAcuiculture.API.Models;
+using Microsoft.Azure.Cosmos;
 
-    public class ContosoAcuicultureAPIContext : DbContext
+public class ContosoAcuicultureAPIContext : DbContext
     {
         public ContosoAcuicultureAPIContext (DbContextOptions<ContosoAcuicultureAPIContext> options)
             : base(options)

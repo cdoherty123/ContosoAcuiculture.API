@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ContosoAcuiculture.API.Models;
+using Microsoft.Azure.Cosmos;
 
 namespace ContosoAcuiculture.API 
 {

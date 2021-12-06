@@ -6,7 +6,10 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.Azure.Cosmos;
+
 namespace ContosoAcuiculture.API.Models
+
 {
     public class ContosoAcuicultureModel
     {
