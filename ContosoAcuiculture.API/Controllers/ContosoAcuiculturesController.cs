@@ -64,8 +64,11 @@ namespace ContosoAcuiculture.API
         [HttpPost]
         public async Task<IActionResult> EditShrimp([FromBody] ContosoAcuicultureModel shrimp)
         {
+            Console.WriteLine("hello");
+            Console.WriteLine(shrimp);
             if (ModelState.IsValid)
             {
+                Console.WriteLine(ModelState);
                 var req = await _cosmoService.UpdateAsync(shrimp);
 
                 if (req == null)
