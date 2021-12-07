@@ -1,108 +1,82 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using ContosoAcuiculture.API.Models;
-using Microsoft.Azure.Cosmos;
+using ContosoAcuiculture.API.Services;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Azure.Cosmos.Linq;
 
-namespace ContosoAcuiculture.API 
+// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+
+namespace ContosoAcuiculture.API
 {
     [Route("api/[controller]")]
     [ApiController]
     public class ContosoAcuiculturesController : ControllerBase
     {
-        private readonly ContosoAcuicultureAPIContext _context;
+        private readonly ICosmosDBService _cosmoService;
 
-        public ContosoAcuiculturesController(ContosoAcuicultureAPIContext context)
+        public ContosoAcuiculturesController(ICosmosDBService cosmoService)
         {
-            _context = context;
+            _cosmoService = cosmoService;
         }
 
-        // GET: api/ContosoAcuicultures
+        // GET: api/<ContosoAcuicultures>
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ContosoAcuicultureModel>>> GetContosoAcuiculture()
+        public async Task<IActionResult> GetAll()
         {
-            return await _context.ContosoAcuiculture.ToListAsync();
+            var shrimps = await _cosmoService.GetAllAsync("SELECT * FROM c");
+
+            if (!shrimps.Any())
+            {
+                return await Task.FromResult(StatusCode((int)HttpStatusCode.OK, "Empty"));
+            }
+
+            return await Task.FromResult(StatusCode((int)HttpStatusCode.OK, shrimps.ToList()));
         }
 
-        // GET: api/ContosoAcuicultures/5
+        // GET api/<ContosoAcuicultures>/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<ContosoAcuicultureModel>> GetContosoAcuiculture(int id)
+        public async Task<IActionResult> Get([FromRoute] string id)
         {
-            var contosoAcuiculture = await _context.ContosoAcuiculture.FindAsync(id);
-
-            if (contosoAcuiculture == null)
-            {
-                return NotFound();
-            }
-
-            return contosoAcuiculture;
+            return await Task.FromResult(StatusCode((int)HttpStatusCode.OK, _cosmoService.GetAsync(id)));
         }
 
-        // PUT: api/ContosoAcuicultures/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutContosoAcuiculture(int id, ContosoAcuicultureModel contosoAcuiculture)
-        {
-            if (id != contosoAcuiculture.ShrimpID)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(contosoAcuiculture).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ContosoAcuicultureExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
-
-        // POST: api/ContosoAcuicultures
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        // POST api/<ContosoAcuicultures>
+        [Route("insert")]
         [HttpPost]
-        public async Task<ActionResult<ContosoAcuicultureModel>> PostContosoAcuiculture(ContosoAcuicultureModel contosoAcuiculture)
+        public async Task<IActionResult> InsertShrimp([FromBody] ContosoAcuicultureModel shrimp)
         {
-            _context.ContosoAcuiculture.Add(contosoAcuiculture);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetContosoAcuiculture", new { id = contosoAcuiculture.ShrimpID }, contosoAcuiculture);
-        }
-
-        // DELETE: api/ContosoAcuicultures/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteContosoAcuiculture(int id)
-        {
-            var contosoAcuiculture = await _context.ContosoAcuiculture.FindAsync(id);
-            if (contosoAcuiculture == null)
+            if (ModelState.IsValid)
             {
-                return NotFound();
+                await _cosmoService.AddAsync(shrimp);
+                return RedirectToAction("GetAll");
             }
 
-            _context.ContosoAcuiculture.Remove(contosoAcuiculture);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
+            return await Task.FromResult(StatusCode((int)HttpStatusCode.BadRequest, shrimp));
         }
 
-        private bool ContosoAcuicultureExists(int id)
+        // POST api/<ContosoAcuicultures>
+        [Route("edit")]
+        [HttpPost]
+        public async Task<IActionResult> EditShrimp([FromBody] ContosoAcuicultureModel shrimp)
         {
-            return _context.ContosoAcuiculture.Any(e => e.ShrimpID == id);
+            if (ModelState.IsValid)
+            {
+                var req = await _cosmoService.UpdateAsync(shrimp);
+
+                if (req == null)
+                {
+                    return await Task.FromResult(StatusCode((int)HttpStatusCode.OK, "Book not found"));
+                }
+
+                return RedirectToAction("GetAll");
+            }
+
+            return await Task.FromResult(StatusCode((int)HttpStatusCode.BadRequest, shrimp));
         }
     }
 }
