@@ -39,20 +39,12 @@ namespace ContosoAcuiculture.API.Services
             }
         }
 
-        public async Task DeleteAsync(string id)
-        {
-            await _container.DeleteItemAsync<ContosoAcuicultureModel>(id, new PartitionKey(id));
-        }
-
         public async Task<ContosoAcuicultureModel> GetAsync(string id)
         {
             try
             {
-                Console.WriteLine(id);
 
                 ItemResponse<ContosoAcuicultureModel> response = await _container.ReadItemAsync<ContosoAcuicultureModel>(id, new PartitionKey(id));
-
-                Console.WriteLine(response);
 
                 return response.Resource;
             }
@@ -83,11 +75,10 @@ namespace ContosoAcuiculture.API.Services
         {
             try
             {
-                Console.WriteLine(entity);
-                var ContosoAcuicultureModel = await GetAsync(entity.ID.ToString());
+                var ContosoAcuicultureModel = await GetAsync(entity.id.ToString());
                 if (ContosoAcuicultureModel != null)
                 {
-                    return await _container.UpsertItemAsync<ContosoAcuicultureModel>(entity, new PartitionKey(entity.ID));
+                    return await _container.ReplaceItemAsync<ContosoAcuicultureModel>(entity, entity.id, new PartitionKey(entity.id));
                 }
 
                 return null;
@@ -97,6 +88,11 @@ namespace ContosoAcuiculture.API.Services
 
                 throw;
             }
+        }
+        public async Task DeleteAsync(string id)
+        {
+            ItemResponse<ContosoAcuicultureModel> response = await _container.DeleteItemAsync<ContosoAcuicultureModel>(id, new PartitionKey(id));
+            
         }
     }
 }

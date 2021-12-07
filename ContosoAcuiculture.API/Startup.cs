@@ -44,11 +44,10 @@ namespace ContosoAcuiculture.API
             string account = this.Configuration["CosmosDb:Account"];
             string key = this.Configuration["CosmosDb:Key"];
 
-            services.AddControllers(option => option.EnableEndpointRouting = false)
-                   .AddNewtonsoftJson(opt => opt.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
+            services.AddControllersWithViews().AddNewtonsoftJson(options =>
+                options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 
             services.AddSingleton<ICosmosDBService>(InitializeCosmosClientInstanceAsync(databaseName, containerName, account, key).GetAwaiter().GetResult());
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

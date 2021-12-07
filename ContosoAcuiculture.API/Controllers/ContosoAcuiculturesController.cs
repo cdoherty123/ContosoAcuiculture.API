@@ -42,7 +42,8 @@ namespace ContosoAcuiculture.API
         [HttpGet("{id}")]
         public async Task<IActionResult> Get([FromRoute] string id)
         {
-            return await Task.FromResult(StatusCode((int)HttpStatusCode.OK, _cosmoService.GetAsync(id)));
+            var response = await Task.FromResult(StatusCode((int)HttpStatusCode.OK, _cosmoService.GetAsync(id)));
+            return response;
         }
 
         // POST api/<ContosoAcuicultures>
@@ -64,8 +65,6 @@ namespace ContosoAcuiculture.API
         [HttpPost]
         public async Task<IActionResult> EditShrimp([FromBody] ContosoAcuicultureModel shrimp)
         {
-            Console.WriteLine("hello");
-            Console.WriteLine(shrimp);
             if (ModelState.IsValid)
             {
                 Console.WriteLine(ModelState);
@@ -80,6 +79,20 @@ namespace ContosoAcuiculture.API
             }
 
             return await Task.FromResult(StatusCode((int)HttpStatusCode.BadRequest, shrimp));
+        }
+
+        // POST api/<ContosoAcuicultures>/5
+        [HttpPost("{id}")]
+        public async Task<IActionResult> DeleteShrimp([FromRoute] string id)
+        {
+            if (String.IsNullOrEmpty(id))
+            {
+                return await Task.FromResult(StatusCode((int)HttpStatusCode.BadRequest, "Insert id!"));
+            }
+
+            await _cosmoService.DeleteAsync(id);
+
+            return await Task.FromResult(StatusCode((int)HttpStatusCode.OK));
         }
     }
 }
