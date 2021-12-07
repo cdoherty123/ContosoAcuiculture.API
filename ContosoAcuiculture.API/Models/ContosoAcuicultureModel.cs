@@ -17,9 +17,9 @@ namespace ContosoAcuiculture.API.Models
         //These are only samples until we recieve the database
             [Key]
             [JsonProperty(PropertyName = "id")]
-            public int ID { get; set; }
+            public string ID { get; set; }
             [JsonProperty(PropertyName = "shrimpid")]
-            public int ShrimpID { get; set; }
+            public string ShrimpID { get; set; }
             [JsonProperty(PropertyName = "shrimpcolor")]
             public string ShrimpColor{ get; set; }
             [JsonProperty(PropertyName = "averageweight")]

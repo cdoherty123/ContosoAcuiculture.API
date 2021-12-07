@@ -48,7 +48,11 @@ namespace ContosoAcuiculture.API.Services
         {
             try
             {
+                Console.WriteLine(id);
+
                 ItemResponse<ContosoAcuicultureModel> response = await _container.ReadItemAsync<ContosoAcuicultureModel>(id, new PartitionKey(id));
+
+                Console.WriteLine(response);
 
                 return response.Resource;
             }
@@ -79,6 +83,7 @@ namespace ContosoAcuiculture.API.Services
         {
             try
             {
+                Console.WriteLine(entity);
                 var ContosoAcuicultureModel = await GetAsync(entity.ID.ToString());
                 if (ContosoAcuicultureModel != null)
                 {
